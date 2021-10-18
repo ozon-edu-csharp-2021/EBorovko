@@ -5,11 +5,12 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	Dockerfile = Dockerfile
 	docker-compose.yml = docker-compose.yml
+	README.md = README.md
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9F1B86B5-2992-44C9-BE39-2A62DC5EA3AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.MerchandiseService.Api", "src\Ozon.MerchandiseService.Api.csproj", "{226A90F1-2555-4562-872B-F68E68A5EC6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.MerchandiseService.Api", "src\Ozon.MerchandiseService.Api\Ozon.MerchandiseService.Api.csproj", "{226A90F1-2555-4562-872B-F68E68A5EC6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F93D014-EB8C-43BD-93B1-99DC96E6449E}"
 EndProject

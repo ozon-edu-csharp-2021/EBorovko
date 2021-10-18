@@ -5,11 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["src/Ozon.MerchandiseService.Api.csproj", "src/"]
-RUN dotnet restore "src/Ozon.MerchandiseService.Api.csproj"
-
+COPY ["src/Ozon.MerchandiseService.Api/Ozon.MerchandiseService.Api.csproj", "Ozon.MerchandiseService.Api/"]
+RUN dotnet restore "src/Ozon.MerchandiseService.Api/Ozon.MerchandiseService.Api.csproj"
 COPY . .
-WORKDIR "/src/src"
+WORKDIR "/src/Ozon.MerchandiseService.Api"
 RUN dotnet build "Ozon.MerchandiseService.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
