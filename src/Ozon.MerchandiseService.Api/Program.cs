@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Ozon.MerchandiseService.Api.Extensions;
+using Ozon.MerchandiseService.Api.Infrastructure.Extensions;
 
 
 namespace Ozon.MerchandiseService.Api

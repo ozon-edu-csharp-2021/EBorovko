@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Ozon.MerchandiseService.Api.Filters;
-using Ozon.MerchandiseService.Api.Interceptors;
-using Ozon.MerchandiseService.Api.StartupFilters;
+using Ozon.MerchandiseService.Api.Infrastructure.Filters;
+using Ozon.MerchandiseService.Api.Infrastructure.Interceptors;
+using Ozon.MerchandiseService.Api.Infrastructure.StartupFilters;
 
-
-namespace Ozon.MerchandiseService.Api.Extensions
+namespace Ozon.MerchandiseService.Api.Infrastructure.Extensions
 {
     public static class HostBuilderExtension
     {

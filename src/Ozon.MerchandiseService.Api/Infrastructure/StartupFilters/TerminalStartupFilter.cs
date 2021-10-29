@@ -2,9 +2,9 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Ozon.MerchandiseService.Api.Middlewares;
+using Ozon.MerchandiseService.Api.Infrastructure.Middlewares;
 
-namespace Ozon.MerchandiseService.Api.StartupFilters
+namespace Ozon.MerchandiseService.Api.Infrastructure.StartupFilters
 {
     public class TerminalStartupFilter: IStartupFilter
     {

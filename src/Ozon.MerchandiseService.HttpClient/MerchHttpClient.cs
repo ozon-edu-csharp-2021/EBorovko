@@ -23,7 +23,7 @@ namespace Ozon.MerchandiseService.HttpClient
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Cannot provide merch");
             
-            return await response.Content.ReadFromJsonAsync<ProvideResponse>();
+            return await response.Content.ReadFromJsonAsync<ProvideResponse>(cancellationToken: token);
         }
         
         public async Task<CheckProvidingResponse> CheckProvidingAsync(CheckProvidingRequest checkProvidingRequest, CancellationToken token)
@@ -32,7 +32,7 @@ namespace Ozon.MerchandiseService.HttpClient
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Cannot check providing merch");
             
-            return await response.Content.ReadFromJsonAsync<CheckProvidingResponse>();
+            return await response.Content.ReadFromJsonAsync<CheckProvidingResponse>(cancellationToken: token);
         }
     }
 }

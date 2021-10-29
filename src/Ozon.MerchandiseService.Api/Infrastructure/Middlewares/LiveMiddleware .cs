@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Ozon.MerchandiseService.Api.Middlewares
+namespace Ozon.MerchandiseService.Api.Infrastructure.Middlewares
 {
     public class LiveMiddleware
     {

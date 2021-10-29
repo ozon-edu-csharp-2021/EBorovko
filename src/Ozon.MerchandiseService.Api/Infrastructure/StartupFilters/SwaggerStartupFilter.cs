@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Ozon.MerchandiseService.Api.StartupFilters
+namespace Ozon.MerchandiseService.Api.Infrastructure.StartupFilters
 {
     public class SwaggerStartupFilter: IStartupFilter
     {

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ozon.MerchandiseService.Api.Filters;
 using Ozon.MerchandiseService.Api.GrpcServices;
 
 namespace Ozon.MerchandiseService.Api
