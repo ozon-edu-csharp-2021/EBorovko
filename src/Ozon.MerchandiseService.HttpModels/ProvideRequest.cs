@@ -2,7 +2,8 @@
 {
     public class ProvideRequest
     {
+        public int MerchPackId { get; set; }
         public long EmployeeId { get; set; }
-        public string MerchType { get; set; }
+        public string EmployeeEmail { get; set; }
     }
 }

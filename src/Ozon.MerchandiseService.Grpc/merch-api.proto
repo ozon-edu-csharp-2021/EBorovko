@@ -9,19 +9,31 @@ service MerchApiGrpc {
 }
 
 message ProvideRequest {
-  int64  employee_id = 1;
-  string  merch_type = 2;
+  int32  merch_pack_id = 1;
+  int64  employee_id = 2;
+  string employee_email = 3;
 }
 
 message ProvideResponse {
-  bool is_providing = 1;
+  int64 merch_providing_request_id = 1;
+  int32 merch_pack_id = 2;
+  string status = 3;
 }
 
 message CheckProvidingRequest {
   int64  employee_id = 1;
-  string  merch_type = 2;
+}
+
+message CheckProvidingResponseUnit {
+  int64 merch_providing_request_id = 1;
+  int64 employee_id = 2;
+  int32 merch_pack_id = 3;
+  string status = 4;
+  string createdDate = 5;
+  string completedDate = 6;
 }
 
 message CheckProvidingResponse {
-  bool is_providing = 1;
+  repeated CheckProvidingResponseUnit providing_requests = 1;
 }
+
