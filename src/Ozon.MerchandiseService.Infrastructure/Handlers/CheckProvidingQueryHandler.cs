@@ -3,33 +3,33 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 using Ozon.MerchandiseService.Infrastructure.Queries;
 
 namespace Ozon.MerchandiseService.Infrastructure.Handlers
 {
     public class CheckProvidingQueryHandler: IRequestHandler<CheckProvidingQuery, CheckProvidingQueryResponse>
     {
-        private readonly IMerchandiseProvidingRequestRepository _merchandiseProvidingRequestRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public CheckProvidingQueryHandler(IMerchandiseProvidingRequestRepository merchandiseProvidingRequestRepository)
+        public CheckProvidingQueryHandler(IEmployeeRepository employeeRepository)
         {
-            _merchandiseProvidingRequestRepository = merchandiseProvidingRequestRepository ?? throw new ArgumentNullException(nameof(merchandiseProvidingRequestRepository));
+            _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
         }
 
         public async Task<CheckProvidingQueryResponse> Handle(CheckProvidingQuery request, CancellationToken cancellationToken)
         {
-            var merchProvidingRequests = await _merchandiseProvidingRequestRepository.FindAllByEmployeeIdAsync(request.EmployeeId, cancellationToken);
+            var employee = await _employeeRepository.FindAsync(request.EmployeeId, cancellationToken);
+            if (employee == null)
+                throw new Exception("Employee not found");
+            
             return new CheckProvidingQueryResponse
             {
-                MerchandiseProvidingRequests = merchProvidingRequests.Select(r => new MerchandiseProvidingRequestDto
+                MerchandisePacks = employee.MerchandisePacks.Select(pack => new MerchandisePackDto()
                 {
-                    MerchProvidingRequestId = r.Id,
-                    MerchPackId = r.MerchandisePack.Id,
-                    EmployeeId = r.EmployeeId,
-                    Status = r.CurrentStatus.Name,
-                    CreatedDate = r.CreatedAt.ToString(),
-                    CompletedDate = r.CompletedAt?.ToString()
+                    Id = pack.Id,
+                    TypeId = pack.TypeId,
+                    Name = pack.Name
                 })  
             };
         }

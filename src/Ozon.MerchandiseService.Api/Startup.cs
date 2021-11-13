@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ozon.MerchandiseService.Api.GrpcServices;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest;
 using Ozon.MerchandiseService.Infrastructure.Handlers;
 using Ozon.MerchandiseService.Infrastructure.Repositories;
@@ -25,6 +26,7 @@ namespace Ozon.MerchandiseService.Api
         {
             services.AddSingleton<IDateTimeService, DateTimeService>();
             services.AddSingleton<IMerchandiseProvidingRequestRepository, StubMerchandiseProvidingRequestRepository>();
+            services.AddSingleton<IEmployeeRepository, StubEmployeeRepository>();
             services.AddSingleton<IStockApiService, MockStockApiService>();
             services.AddMediatR(typeof(ProvideCommandHandler).Assembly);
         }

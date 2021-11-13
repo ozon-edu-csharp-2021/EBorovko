@@ -25,12 +25,9 @@ message CheckProvidingRequest {
 }
 
 message CheckProvidingResponseUnit {
-  int64 merch_providing_request_id = 1;
-  int64 employee_id = 2;
-  int32 merch_pack_id = 3;
-  string status = 4;
-  string createdDate = 5;
-  string completedDate = 6;
+  int64 merch_pack_id = 1;
+  int32 merch_pack_type_id = 2;
+  string merch_pack_name = 3;
 }
 
 message CheckProvidingResponse {

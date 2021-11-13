@@ -4,13 +4,14 @@ using System.Linq;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.ValueObjects;
 using Ozon.MerchandiseService.Domain.Exceptions.MerchandiseProvidingRequest;
+using Ozon.MerchandiseService.Domain.ValueObjects;
 using Xunit;
 
 namespace Ozon.Merchandise.Domain.Tests.Aggregates
 {
     public class MerchandiseProvidingRequestTests
     {
-        private static MerchandiseProvidingRequest CreateParameterized(MerchandisePack merchandisePack)
+        private static MerchandiseProvidingRequest CreateParameterized(MerchandisePackType merchandisePack)
         {
             return new (
                 1,
@@ -22,11 +23,11 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         public static IEnumerable<object[]> DataForGetSkuIds
             => new List<object[]>
             {
-                new object[]{ CreateParameterized(MerchandisePack.WelcomePack), MerchandisePack.WelcomePack.SkuList.Select(s => s.Value)},
-                new object[]{ CreateParameterized(MerchandisePack.StarterPack), MerchandisePack.StarterPack.SkuList.Select(s => s.Value)},
-                new object[]{ CreateParameterized(MerchandisePack.ConferenceListenerPack), MerchandisePack.ConferenceListenerPack.SkuList.Select(s => s.Value)},
-                new object[]{ CreateParameterized(MerchandisePack.ConferenceSpeakerPack), MerchandisePack.ConferenceSpeakerPack.SkuList.Select(s => s.Value)},
-                new object[]{ CreateParameterized(MerchandisePack.VeteranPack), MerchandisePack.VeteranPack.SkuList.Select(s => s.Value)}
+                new object[]{ CreateParameterized(MerchandisePackType.WelcomePack), MerchandisePackType.WelcomePack.SkuList.Select(s => s.Value)},
+                new object[]{ CreateParameterized(MerchandisePackType.StarterPack), MerchandisePackType.StarterPack.SkuList.Select(s => s.Value)},
+                new object[]{ CreateParameterized(MerchandisePackType.ConferenceListenerPack), MerchandisePackType.ConferenceListenerPack.SkuList.Select(s => s.Value)},
+                new object[]{ CreateParameterized(MerchandisePackType.ConferenceSpeakerPack), MerchandisePackType.ConferenceSpeakerPack.SkuList.Select(s => s.Value)},
+                new object[]{ CreateParameterized(MerchandisePackType.VeteranPack), MerchandisePackType.VeteranPack.SkuList.Select(s => s.Value)}
             };
         
         public static IEnumerable<object[]> DataForCheckOneYearPass
@@ -53,7 +54,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void InitParameterizedMerchandiseProvidingRequest_CurrentStatusIsCreated()
         {
-            var request = CreateParameterized(MerchandisePack.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.StarterPack);
             
             Assert.Equal(Status.Created, request.CurrentStatus);
         }
@@ -61,7 +62,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void ProcessRequestWithCreatedStatus_CurrentStatusIsInWork()
         {
-            var request = CreateParameterized(MerchandisePack.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.StarterPack);
             
             request.Wait();
             
@@ -79,32 +80,32 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void CompleteRequestWithCreatedStatus_CurrentStatusIsInDoneAndCompleteAtMustBeSet()
         {
-            var request = CreateParameterized(MerchandisePack.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.StarterPack);
             var completeAt = new DateTimeOffset(2021, 11, 5, 10, 10, 20, TimeSpan.Zero);
             
             request.Complete(completeAt);
             
             Assert.Equal(Status.Done, request.CurrentStatus);
-            Assert.Equal(0, DateTimeOffset.Compare(completeAt, request.CompletedAt.Value));
+            Assert.Equal(completeAt, request.CompletedAt!.Value);
         }
         
         [Fact]
         public void CompleteRequestWithInWorkStatus_CurrentStatusIsDoneAndCompletedDateTimeMustBeSet()
         {
-            var request = CreateParameterized(MerchandisePack.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.StarterPack);
             var dateTimeCompleted = new DateTimeOffset(2021, 11, 5, 10, 10, 20, TimeSpan.Zero);
             request.Wait();
             
             request.Complete(dateTimeCompleted);
             
             Assert.Equal(Status.Done, request.CurrentStatus);
-            Assert.Equal(0,DateTimeOffset.Compare(dateTimeCompleted, request.CompletedAt.Value));
+            Assert.Equal(dateTimeCompleted, request.CompletedAt!.Value);
         }
         
         [Fact]
         public void CompleteRequest_PassInvalidCompletedAt_ThrowCompleteAtException()
         {
-            var request = CreateParameterized(MerchandisePack.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.StarterPack);
             var completeAt = new DateTimeOffset(2021, 11, 3, 10, 10, 20, TimeSpan.Zero);
             
             Assert.Throws<CompleteAtException>(()=> request.Complete(completeAt));
@@ -132,7 +133,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         public void CheckOneYearPass_ReturnExpected(DateTimeOffset completedAt, DateTimeOffset toCompare, bool expected)
         {
             var request = new MerchandiseProvidingRequest();
-            request.GetType().GetProperty("CompletedAt").SetValue(request, completedAt);
+            request.GetType().GetProperty("CompletedAt")?.SetValue(request, completedAt);
             
             var result = request.CheckOneYearPassFromProviding(toCompare);
             

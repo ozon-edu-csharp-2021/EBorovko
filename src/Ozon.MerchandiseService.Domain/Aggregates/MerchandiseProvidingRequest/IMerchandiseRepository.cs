@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
@@ -14,14 +13,6 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<MerchandiseProvidingRequest> FindByMerchPackIdAndEmployeeIdAsync(int merchPackId, long employeeId, CancellationToken cancellationToken);
-        
-        /// <summary>
-        /// Найти все запросы по идентификатору сотрудника
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<IEnumerable<MerchandiseProvidingRequest>> FindAllByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken);
         
         /// <summary>
         /// Создать запрос

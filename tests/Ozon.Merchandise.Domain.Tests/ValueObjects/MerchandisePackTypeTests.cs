@@ -1,10 +1,10 @@
-using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.ValueObjects;
 using Ozon.MerchandiseService.Domain.Exceptions.MerchandiseProvidingRequest;
+using Ozon.MerchandiseService.Domain.ValueObjects;
 using Xunit;
 
 namespace Ozon.Merchandise.Domain.Tests.ValueObjects
 {
-    public class MerchandisePackTests
+    public class MerchandisePackTypeTests
     {
         [Theory]
         [InlineData(10)]
@@ -14,7 +14,7 @@ namespace Ozon.Merchandise.Domain.Tests.ValueObjects
         [InlineData(50)]
         public void Parse_ValidId_ReturnNewMerchandisePackWithSuchId(int id)
         {
-            var merchandisePack = MerchandisePack.Parse(id);
+            var merchandisePack = MerchandisePackType.Parse(id);
             Assert.NotNull(merchandisePack);
             Assert.Equal(id, merchandisePack.Id );
         }
@@ -24,7 +24,7 @@ namespace Ozon.Merchandise.Domain.Tests.ValueObjects
         [InlineData(60)]
         public void Parse_InValidId_ThrowUnknownMerchPackIdException(int id)
         {
-            Assert.Throws<UnknownMerchPackId>(() => MerchandisePack.Parse(id));
+            Assert.Throws<UnknownMerchPackId>(() => MerchandisePackType.Parse(id));
         }
     }
 }

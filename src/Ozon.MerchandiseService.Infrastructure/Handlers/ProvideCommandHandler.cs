@@ -54,7 +54,7 @@ namespace Ozon.MerchandiseService.Infrastructure.Handlers
             return new ProvideCommandResponse
             {
                 MerchProvidingRequestId = newMerchRequest.Id,
-                MerchPackId = newMerchRequest.MerchandisePack.Id,
+                MerchPackId = newMerchRequest.MerchandisePackType.Id,
                 Status = newMerchRequest.CurrentStatus.Name
             };
         }

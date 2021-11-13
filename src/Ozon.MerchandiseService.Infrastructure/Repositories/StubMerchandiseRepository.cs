@@ -26,17 +26,11 @@ namespace Ozon.MerchandiseService.Infrastructure.Repositories
         public Task<MerchandiseProvidingRequest> FindByMerchPackIdAndEmployeeIdAsync(int merchPackId, long employeeId, CancellationToken cancellationToken)
         {
             var request = _requests
-                .Where(r => r.MerchandisePack.Id == merchPackId && r.EmployeeId == employeeId)
+                .Where(r => r.MerchandisePackType.Id == merchPackId && r.EmployeeId == employeeId)
                 .OrderByDescending(r => r.CompletedAt)
                 .FirstOrDefault();
             
             return Task.FromResult(request ?? new MerchandiseProvidingRequest());
-        }
-
-        public Task<IEnumerable<MerchandiseProvidingRequest>> FindAllByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken)
-        {
-            var requests = _requests.Where(r => r.EmployeeId == employeeId);
-            return Task.FromResult(requests);
         }
 
         public Task<long> CreateAsync(MerchandiseProvidingRequest merchandiseRequest, CancellationToken cancellationToken)

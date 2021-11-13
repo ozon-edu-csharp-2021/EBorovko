@@ -59,14 +59,11 @@ namespace Ozon.MerchandiseService.Api.GrpcServices
 
             var queryResponse  =  await _mediator.Send(checkProvidingQuery, context.CancellationToken);
 
-            var providingRequests = queryResponse.MerchandiseProvidingRequests.Select(r => new CheckProvidingResponseUnit()
+            var providingRequests = queryResponse.MerchandisePacks.Select(pack => new CheckProvidingResponseUnit()
             {
-                MerchProvidingRequestId = r.MerchProvidingRequestId,
-                EmployeeId = r.EmployeeId,
-                MerchPackId = r.MerchPackId,
-                Status = r.Status,
-                CreatedDate = r.CreatedDate,
-                CompletedDate = r.CompletedDate,
+                MerchPackId =  pack.Id,
+                MerchPackTypeId =  pack.TypeId,
+                MerchPackName =  pack.Name
             });
             var response = new CheckProvidingResponse();
             response.ProvidingRequests.AddRange(providingRequests);

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ozon.MerchandiseService.HttpModels;
 using Ozon.MerchandiseService.Infrastructure.Commands;
 using Ozon.MerchandiseService.Infrastructure.Queries;
-using MerchandiseProvidingRequestDto = Ozon.MerchandiseService.HttpModels.MerchandiseProvidingRequestDto;
+using MerchandisePackDto = Ozon.MerchandiseService.HttpModels.MerchandisePackDto;
 
 
 namespace Ozon.MerchandiseService.Api.Controllers
@@ -69,14 +69,11 @@ namespace Ozon.MerchandiseService.Api.Controllers
             
             var response = new CheckProvidingResponse()
             {
-                MerchandiseProvidingRequests = queryResponse.MerchandiseProvidingRequests.Select(request => new MerchandiseProvidingRequestDto()
+                MerchandisePacks = queryResponse.MerchandisePacks.Select(pack => new MerchandisePackDto()
                 {
-                    MerchProvidingRequestId = request.MerchProvidingRequestId,
-                    EmployeeId = request.EmployeeId,
-                    MerchPackId = request.MerchPackId,
-                    Status = request.Status,
-                    CreatedDate = request.CreatedDate,
-                    CompletedDate = request.CompletedDate,
+                    Id = pack.Id,
+                    TypeId = pack.TypeId,
+                    Name = pack.Name
                 })
             };
             return Ok(response);

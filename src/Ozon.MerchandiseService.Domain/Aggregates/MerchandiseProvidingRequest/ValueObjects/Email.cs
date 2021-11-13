@@ -5,7 +5,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.
 {
     public class Email:ValueObject
     {
-        private string Value { get; }
+        public string Value { get; }
         
         public Email(string value)
         {

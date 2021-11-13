@@ -1,29 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.ValueObjects;
 using Ozon.MerchandiseService.Domain.Events;
 using Ozon.MerchandiseService.Domain.Exceptions.MerchandiseProvidingRequest;
 using Ozon.MerchandiseService.Domain.Models;
+using Ozon.MerchandiseService.Domain.ValueObjects;
+
 
 namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
 {
     public class MerchandiseProvidingRequest: Entity
     {
+        private readonly Employee.Employee _employee;
+
         /// <summary>
         /// Идентификатор сотрудника, которому предназначен мерч
         /// </summary>
-        public long EmployeeId { get; }
-        
+        public long EmployeeId => _employee.Id;
+
         /// <summary>
         /// Email сотрудника, которому предназначен мерч
         /// </summary>
-        public Email EmployeeEmail { get; }
+        public string EmployeeEmail => _employee.Email;
 
         /// <summary>
         /// Тип набора мерча
         /// </summary>
-        public MerchandisePack MerchandisePack { get;}
+        public MerchandisePackType MerchandisePackType { get;}
         
         /// <summary>
         /// Текущий статус 
@@ -54,7 +59,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         /// Перечень идентификаторов SKU
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<long> SkuIds => MerchandisePack.SkuList.Select(item => item.Value);
+        public IEnumerable<long> SkuIds => MerchandisePackType.SkuList.Select(item => item.Value);
         
         public MerchandiseProvidingRequest()
         {
@@ -64,9 +69,9 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         public MerchandiseProvidingRequest(long employeeId, string employeeEmail, int merchPackId, DateTimeOffset createAt)
             : this()
         {
-            EmployeeId = employeeId;
-            EmployeeEmail = new Email(employeeEmail);
-            MerchandisePack = MerchandisePack.Parse(merchPackId);
+            _employee = new Employee.Employee(employeeId, employeeEmail);
+                
+            MerchandisePackType = MerchandisePackType.Parse(merchPackId);
             CreatedAt = createAt;
             CurrentStatus = Status.Created;
         }
@@ -97,6 +102,8 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
             if (completeAt <= CreatedAt)
                 throw new CompleteAtException(CreatedAt.ToString(), completeAt.ToString());
             
+            _employee.Give(new MerchandisePack(MerchandisePackType));
+            
             CompletedAt = completeAt;
             CurrentStatus = Status.Done;
             
@@ -112,9 +119,11 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         {
             if (!CompletedAt.HasValue)
                 return false;
+
+            if (CompletedAt >= dateTime)
+                return false;
             
-            int daysInYear = 365;
-            return (dateTime - CompletedAt.Value.DateTime).Days > daysInYear;
+            return dateTime.AddYears(-1) > CompletedAt; 
         }
     }
 }
