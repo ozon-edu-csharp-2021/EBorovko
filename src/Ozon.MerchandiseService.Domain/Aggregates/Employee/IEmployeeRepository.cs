@@ -1,9 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Ozon.MerchandiseService.Domain.Contracts;
 
 namespace Ozon.MerchandiseService.Domain.Aggregates.Employee
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeRepository: IRepository<Employee>
     {
         /// <summary>
         /// Найти сотрудника
@@ -11,7 +12,25 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.Employee
         /// <param name="employeeId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Employee> FindAsync(long employeeId, CancellationToken cancellationToken);
+        Task<bool> ExistsAsync(long employeeId, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Получить все мерчпаки
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<Employee> GetWithAllMerchPacksAsync(long employeeId, CancellationToken cancellationToken);
+        
+        
+        
+        /// <summary>
+        /// Создать нового сотрудника
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task CreateAsync(Employee employee, CancellationToken cancellationToken);
         
         /// <summary>
         /// Обновить данные по сотруднику

@@ -7,6 +7,7 @@ ProjectSection(SolutionItems) = preProject
 	docker-compose.yml = docker-compose.yml
 	README.md = README.md
 	merch-service-canvas.drawio = merch-service-canvas.drawio
+	entrypoint.sh = entrypoint.sh
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9F1B86B5-2992-44C9-BE39-2A62DC5EA3AC}"
@@ -27,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.MerchandiseService.Inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Merchandise.Domain.Tests", "tests\Ozon.Merchandise.Domain.Tests\Ozon.Merchandise.Domain.Tests.csproj", "{2AE3605B-D959-4A6A-9B8E-BF5AA2FD3C1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.MerchandiseService.Migrator", "src\Ozon.MerchandiseService.Migrator\Ozon.MerchandiseService.Migrator.csproj", "{18BA3E62-5F81-413A-AA56-ED45883FFFFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +43,7 @@ Global
 		{878148AF-C464-4E1A-850C-C978AF6275BD} = {9F1B86B5-2992-44C9-BE39-2A62DC5EA3AC}
 		{AAC41BF2-9DFD-4656-B24F-729704106503} = {9F1B86B5-2992-44C9-BE39-2A62DC5EA3AC}
 		{2AE3605B-D959-4A6A-9B8E-BF5AA2FD3C1E} = {4F93D014-EB8C-43BD-93B1-99DC96E6449E}
+		{18BA3E62-5F81-413A-AA56-ED45883FFFFF} = {9F1B86B5-2992-44C9-BE39-2A62DC5EA3AC}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{226A90F1-2555-4562-872B-F68E68A5EC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -70,5 +74,9 @@ Global
 		{2AE3605B-D959-4A6A-9B8E-BF5AA2FD3C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AE3605B-D959-4A6A-9B8E-BF5AA2FD3C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AE3605B-D959-4A6A-9B8E-BF5AA2FD3C1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18BA3E62-5F81-413A-AA56-ED45883FFFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18BA3E62-5F81-413A-AA56-ED45883FFFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18BA3E62-5F81-413A-AA56-ED45883FFFFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18BA3E62-5F81-413A-AA56-ED45883FFFFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

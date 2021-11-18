@@ -19,7 +19,7 @@ namespace Ozon.MerchandiseService.Infrastructure.Handlers
 
         public async Task<CheckProvidingQueryResponse> Handle(CheckProvidingQuery request, CancellationToken cancellationToken)
         {
-            var employee = await _employeeRepository.FindAsync(request.EmployeeId, cancellationToken);
+            var employee = await _employeeRepository.GetWithAllMerchPacksAsync(request.EmployeeId, cancellationToken);
             if (employee == null)
                 throw new Exception("Employee not found");
             
@@ -27,7 +27,6 @@ namespace Ozon.MerchandiseService.Infrastructure.Handlers
             {
                 MerchandisePacks = employee.MerchandisePacks.Select(pack => new MerchandisePackDto()
                 {
-                    Id = pack.Id,
                     TypeId = pack.TypeId,
                     Name = pack.Name
                 })  
