@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.ValueObjects;
 using Ozon.MerchandiseService.Domain.Exceptions.MerchandiseProvidingRequest;
 using Ozon.MerchandiseService.Domain.ValueObjects;
 using Xunit;
+using Email = Ozon.MerchandiseService.Domain.Aggregates.Employee.ValueObjects.Email;
 
 namespace Ozon.Merchandise.Domain.Tests.Aggregates
 {
@@ -14,8 +16,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         private static MerchandiseProvidingRequest CreateParameterized(MerchandisePackType merchandisePack)
         {
             return new (
-                1,
-                "ivanov@ozon.com",
+                new Employee(1, Email.Create("ivanov@ozon.com")),
                 merchandisePack.Id,
                 new DateTimeOffset(2021, 11, 3, 10, 10, 20, TimeSpan.Zero));
         }

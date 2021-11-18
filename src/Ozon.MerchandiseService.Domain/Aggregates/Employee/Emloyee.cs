@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ozon.MerchandiseService.Domain.Events;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee.ValueObjects;
 using Ozon.MerchandiseService.Domain.Models;
 
 namespace Ozon.MerchandiseService.Domain.Aggregates.Employee
@@ -11,31 +11,47 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.Employee
         /// <summary>
         /// Email сотрудника
         /// </summary>
-        public string Email { get; }
+        public Email Email { get; private set; }
 
         /// <summary>
         /// Перечень выданных паков
         /// </summary>
-        public IReadOnlyList<MerchandisePack> MerchandisePacks => _merchandisePacks; 
+        public IReadOnlyList<MerchandisePack> MerchandisePacks => _merchandisePacks;
 
-        public Employee(long id, string email)
+        /*public Employee()
+        {
+            _merchandisePacks = new List<MerchandisePack>();
+        }*/
+        
+        public Employee(long id)
+        {
+            Id = id;
+            _merchandisePacks = new List<MerchandisePack>();
+        } 
+        
+
+        public Employee(long id, Email email)
         {
             Id = id;
             Email = email;
             _merchandisePacks = new List<MerchandisePack>();
-        }
+        } 
         
-        public Employee(long id, string email, IEnumerable<MerchandisePack> merchandisePacks)
+        public Employee(long id, Email email, IEnumerable<MerchandisePack> merchandisePacks)
             : this(id, email)
         {
             _merchandisePacks =  new List<MerchandisePack>(merchandisePacks);
         }
 
+        public void SetEmail(Email email)
+        {
+            Email = email;
+        }
+        
+
         public void Give(MerchandisePack merchandisePack)
         {
             _merchandisePacks.Add(merchandisePack);
-            
-            this.AddDomainEvent(new GivingNewMerchandisePackDomainEvent(this));
         }
     }
 }
