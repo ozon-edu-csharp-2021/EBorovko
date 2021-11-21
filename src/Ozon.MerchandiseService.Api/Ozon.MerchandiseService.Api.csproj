@@ -13,11 +13,13 @@
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Ozon.MerchandiseService.Grpc\Ozon.MerchandiseService.Grpc.csproj" />
       <ProjectReference Include="..\Ozon.MerchandiseService.HttpModels\Ozon.MerchandiseService.HttpModels.csproj" />
+      <ProjectReference Include="..\Ozon.MerchandiseService.Infrastructure\Ozon.MerchandiseService.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

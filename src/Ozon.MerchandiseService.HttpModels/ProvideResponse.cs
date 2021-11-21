@@ -2,6 +2,8 @@
 {
     public class ProvideResponse
     {
-        public bool IsProvided { get; set; }
+        public long MerchProvidingRequestId { get; set; }
+        public int MerchPackId { get; set; }
+        public string Status { get; set; }
     }
 }

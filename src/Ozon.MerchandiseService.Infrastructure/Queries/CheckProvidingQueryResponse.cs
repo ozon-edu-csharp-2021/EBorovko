@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Ozon.MerchandiseService.HttpModels
+namespace Ozon.MerchandiseService.Infrastructure.Queries
 {
-    public class CheckProvidingResponse
+    public class CheckProvidingQueryResponse
     {
-        public IEnumerable<MerchandisePackDto> MerchandisePacks { get; set; }
+        public IEnumerable<MerchandisePackDto> MerchandisePacks { get; init; }
     }
 
     public class MerchandisePackDto
