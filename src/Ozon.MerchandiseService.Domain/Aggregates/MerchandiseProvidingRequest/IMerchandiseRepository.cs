@@ -1,9 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Ozon.MerchandiseService.Domain.Contracts;
 
 namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
 {
-    public interface IMerchandiseProvidingRequestRepository
+    public interface IMerchandiseProvidingRequestRepository: IRepository<MerchandiseProvidingRequest>
     {
         /// <summary>
         /// Найти последний завершенный запрос по идентификатору мерчпака и идентификатору сотрудника

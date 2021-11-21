@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ozon.MerchandiseService.Domain.Aggregates.Employee;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee.ValueObjects;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.ValueObjects;
 using Ozon.MerchandiseService.Domain.Events;
 using Ozon.MerchandiseService.Domain.Exceptions.MerchandiseProvidingRequest;
@@ -13,17 +13,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
 {
     public class MerchandiseProvidingRequest: Entity
     {
-        private readonly Employee.Employee _employee;
-
-        /// <summary>
-        /// Идентификатор сотрудника, которому предназначен мерч
-        /// </summary>
-        public long EmployeeId => _employee.Id;
-
-        /// <summary>
-        /// Email сотрудника, которому предназначен мерч
-        /// </summary>
-        public string EmployeeEmail => _employee.Email;
+        public Employee.Employee Employee { get; }
 
         /// <summary>
         /// Тип набора мерча
@@ -66,10 +56,36 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
             CurrentStatus = Status.Draft;
         }
 
-        public MerchandiseProvidingRequest(long employeeId, string employeeEmail, int merchPackId, DateTimeOffset createAt)
+        /// <summary>
+        /// Для инициализации из БД
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <param name="merchandisePackType"></param>
+        /// <param name="status"></param>
+        /// <param name="createdAt"></param>
+        /// <param name="completedAt"></param>
+        public MerchandiseProvidingRequest(
+            long id, 
+            Employee.Employee employee, 
+            MerchandisePackType merchandisePackType,
+            Status status,
+            DateTimeOffset createdAt, 
+            DateTimeOffset? completedAt)
+        {
+            Id = id;
+            Employee = employee;
+            MerchandisePackType = merchandisePackType;
+            CurrentStatus = status;
+            CreatedAt = createdAt;
+            CompletedAt = completedAt;
+        }
+        
+
+        public MerchandiseProvidingRequest(Employee.Employee employee, int merchPackId, DateTimeOffset createAt)
             : this()
         {
-            _employee = new Employee.Employee(employeeId, employeeEmail);
+            Employee = employee;
                 
             MerchandisePackType = MerchandisePackType.Parse(merchPackId);
             CreatedAt = createAt;
@@ -102,12 +118,12 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
             if (completeAt <= CreatedAt)
                 throw new CompleteAtException(CreatedAt.ToString(), completeAt.ToString());
             
-            _employee.Give(new MerchandisePack(MerchandisePackType));
+            Employee.Give(new MerchandisePack(MerchandisePackType));
             
             CompletedAt = completeAt;
             CurrentStatus = Status.Done;
             
-            this.AddDomainEvent(new RequestStatusChangedOnDoneDomainEvent(Id));
+            this.AddDomainEvent(new RequestStatusChangedOnDoneDomainEvent(Employee));
         }
 
         /// <summary>

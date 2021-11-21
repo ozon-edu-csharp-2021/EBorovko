@@ -71,7 +71,6 @@ namespace Ozon.MerchandiseService.Api.Controllers
             {
                 MerchandisePacks = queryResponse.MerchandisePacks.Select(pack => new MerchandisePackDto()
                 {
-                    Id = pack.Id,
                     TypeId = pack.TypeId,
                     Name = pack.Name
                 })

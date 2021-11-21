@@ -12,5 +12,19 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.
         private Status(int id, string name) : base(id, name)
         {
         }
+
+        public static Status Parse(int id)
+        {
+            return id switch
+            {
+                1 => Draft,
+                2 => Created,
+                4 => InWork,
+                5 => Done,
+                _ => Draft
+            };
+        }
+        
+            
     }
 }

@@ -1,14 +1,14 @@
 ﻿using MediatR;
+using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 
 namespace Ozon.MerchandiseService.Domain.Events
 {
-    public class RequestStatusChangedOnDoneDomainEvent: INotification
+    public record RequestStatusChangedOnDoneDomainEvent: INotification
     {
-        public long RequestId { get;}
-
-        public RequestStatusChangedOnDoneDomainEvent(long requestId)
+        public Employee Employee { get; set; }
+        public RequestStatusChangedOnDoneDomainEvent(Employee employee)
         {
-            RequestId = requestId;
+            Employee = employee;
         }
         
     }

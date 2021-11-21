@@ -61,7 +61,6 @@ namespace Ozon.MerchandiseService.Api.GrpcServices
 
             var providingRequests = queryResponse.MerchandisePacks.Select(pack => new CheckProvidingResponseUnit()
             {
-                MerchPackId =  pack.Id,
                 MerchPackTypeId =  pack.TypeId,
                 MerchPackName =  pack.Name
             });
