@@ -1,25 +1,42 @@
-﻿using System.Threading;
+﻿using System;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using Confluent.Kafka;
+using CSharpCourse.Core.Lib.Enums;
+using CSharpCourse.Core.Lib.Events;
 using MediatR;
-using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 using Ozon.MerchandiseService.Domain.Events;
+using Ozon.MerchandiseService.Infrastructure.MessageBrocker;
 
 namespace Ozon.MerchandiseService.Infrastructure.Handlers.DomainEvents
 {
     public class MerchandiseRequestStatusDoneEventHandler: INotificationHandler<RequestStatusChangedOnDoneDomainEvent>
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IProducerBuilderWrapper _producerBuilderWrapper;
 
-        public MerchandiseRequestStatusDoneEventHandler(IEmployeeRepository employeeRepository)
+        public MerchandiseRequestStatusDoneEventHandler(IProducerBuilderWrapper producerBuilderWrapper)
         {
-            _employeeRepository = employeeRepository;
+            _producerBuilderWrapper = producerBuilderWrapper ?? throw new ArgumentNullException(nameof(producerBuilderWrapper));
         }
 
-        public async Task Handle(RequestStatusChangedOnDoneDomainEvent notification, CancellationToken cancellationToken)
+        public Task Handle(RequestStatusChangedOnDoneDomainEvent notification, CancellationToken cancellationToken)
         {
-            bool isExists = await _employeeRepository.ExistsAsync(notification.Employee.Id, cancellationToken);
-            if (!isExists)
-                await _employeeRepository.CreateAsync(notification.Employee, cancellationToken);
+            var message = new Message<string, string>()
+            {
+                Key = notification.RequestId.ToString(),
+                Value = JsonSerializer.Serialize(new NotificationEvent()
+                {
+                    EmployeeEmail = notification.Employee.Email.Value,
+                    Payload = new MerchDeliveryEventPayload
+                    {
+                        MerchType = (MerchType) notification.MerchandisePackType.Id
+                    }
+                })
+            };
+            _producerBuilderWrapper.Producer.Produce(_producerBuilderWrapper.EmailNotificationTopic, message);
+            
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -17,6 +19,7 @@ namespace Ozon.MerchandiseService.Api.Infrastructure.Extensions
         {
             hostBuilder.ConfigureServices((_, services) =>
             {
+                services.AddSingleton<IStartupFilter, TracingStartupFilter>();
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, LoggingStartupFilter>();
                 
@@ -33,10 +36,25 @@ namespace Ozon.MerchandiseService.Api.Infrastructure.Extensions
                 
                 services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
                 services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+                
             });
             
             return hostBuilder;
         }
-        
+
+        public static IHostBuilder ConfigurePorts(this IHostBuilder hostBuilder)
+        {
+            hostBuilder.ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+                webBuilder.ConfigureKestrel(
+                    options =>
+                    {
+                        options.Listen(IPAddress.Any, 5000, configure => configure.Protocols = HttpProtocols.Http1);
+                        options.Listen(IPAddress.Any, 5002, configure => configure.Protocols = HttpProtocols.Http2);
+                    });
+            });
+            return hostBuilder;
+        }
     }
 }
