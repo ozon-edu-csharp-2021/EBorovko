@@ -25,6 +25,8 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         /// </summary>
         public Status CurrentStatus { get; private set; }
 
+        public ClothingSize ClothingSize { get; private set; }
+
         /// <summary>
         /// Время создания 
         /// </summary>
@@ -49,7 +51,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         /// Перечень идентификаторов SKU
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<long> SkuIds => MerchandisePackType.SkuList.Select(item => item.Value);
+        public IEnumerable<int> SkuIds => MerchandisePackType.SkuList.Select(item => item.Value);
         
         public MerchandiseProvidingRequest()
         {
@@ -63,6 +65,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
         /// <param name="employee"></param>
         /// <param name="merchandisePackType"></param>
         /// <param name="status"></param>
+        /// <param name="clothingSize"></param>
         /// <param name="createdAt"></param>
         /// <param name="completedAt"></param>
         public MerchandiseProvidingRequest(
@@ -70,6 +73,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
             Employee.Employee employee, 
             MerchandisePackType merchandisePackType,
             Status status,
+            ClothingSize clothingSize,
             DateTimeOffset createdAt, 
             DateTimeOffset? completedAt)
         {
@@ -77,17 +81,18 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
             Employee = employee;
             MerchandisePackType = merchandisePackType;
             CurrentStatus = status;
+            ClothingSize = clothingSize;
             CreatedAt = createdAt;
             CompletedAt = completedAt;
         }
         
 
-        public MerchandiseProvidingRequest(Employee.Employee employee, int merchPackId, DateTimeOffset createAt)
+        public MerchandiseProvidingRequest(Employee.Employee employee, int merchPackId, int clothingSize, DateTimeOffset createAt)
             : this()
         {
             Employee = employee;
-                
             MerchandisePackType = MerchandisePackType.Parse(merchPackId);
+            ClothingSize = ClothingSize.Parse(clothingSize);
             CreatedAt = createAt;
             CurrentStatus = Status.Created;
         }
@@ -123,7 +128,7 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest
             CompletedAt = completeAt;
             CurrentStatus = Status.Done;
             
-            this.AddDomainEvent(new RequestStatusChangedOnDoneDomainEvent(Employee));
+            this.AddDomainEvent(new RequestStatusChangedOnDoneDomainEvent(Id, Employee, MerchandisePackType));
         }
 
         /// <summary>

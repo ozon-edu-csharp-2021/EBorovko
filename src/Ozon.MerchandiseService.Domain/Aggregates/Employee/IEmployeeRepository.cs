@@ -22,6 +22,13 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.Employee
         /// <returns></returns>
         Task<Employee> GetWithAllMerchPacksAsync(long employeeId, CancellationToken cancellationToken);
         
+        /// <summary>
+        /// Получить все мерчпаки
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<Employee> GetWithAllMerchPacksAsync(string email, CancellationToken cancellationToken);
         
         
         /// <summary>

@@ -18,6 +18,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
             return new (
                 new Employee(1, Email.Create("ivanov@ozon.com")),
                 merchandisePack.Id,
+                1,
                 new DateTimeOffset(2021, 11, 3, 10, 10, 20, TimeSpan.Zero));
         }
         
@@ -25,7 +26,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
             => new List<object[]>
             {
                 new object[]{ CreateParameterized(MerchandisePackType.WelcomePack), MerchandisePackType.WelcomePack.SkuList.Select(s => s.Value)},
-                new object[]{ CreateParameterized(MerchandisePackType.StarterPack), MerchandisePackType.StarterPack.SkuList.Select(s => s.Value)},
+                new object[]{ CreateParameterized(MerchandisePackType.ProbationPeriodEndingPack), MerchandisePackType.ProbationPeriodEndingPack.SkuList.Select(s => s.Value)},
                 new object[]{ CreateParameterized(MerchandisePackType.ConferenceListenerPack), MerchandisePackType.ConferenceListenerPack.SkuList.Select(s => s.Value)},
                 new object[]{ CreateParameterized(MerchandisePackType.ConferenceSpeakerPack), MerchandisePackType.ConferenceSpeakerPack.SkuList.Select(s => s.Value)},
                 new object[]{ CreateParameterized(MerchandisePackType.VeteranPack), MerchandisePackType.VeteranPack.SkuList.Select(s => s.Value)}
@@ -55,7 +56,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void InitParameterizedMerchandiseProvidingRequest_CurrentStatusIsCreated()
         {
-            var request = CreateParameterized(MerchandisePackType.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.WelcomePack);
             
             Assert.Equal(Status.Created, request.CurrentStatus);
         }
@@ -63,7 +64,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void ProcessRequestWithCreatedStatus_CurrentStatusIsInWork()
         {
-            var request = CreateParameterized(MerchandisePackType.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.WelcomePack);
             
             request.Wait();
             
@@ -81,7 +82,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void CompleteRequestWithCreatedStatus_CurrentStatusIsInDoneAndCompleteAtMustBeSet()
         {
-            var request = CreateParameterized(MerchandisePackType.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.WelcomePack);
             var completeAt = new DateTimeOffset(2021, 11, 5, 10, 10, 20, TimeSpan.Zero);
             
             request.Complete(completeAt);
@@ -93,7 +94,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void CompleteRequestWithInWorkStatus_CurrentStatusIsDoneAndCompletedDateTimeMustBeSet()
         {
-            var request = CreateParameterized(MerchandisePackType.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.WelcomePack);
             var dateTimeCompleted = new DateTimeOffset(2021, 11, 5, 10, 10, 20, TimeSpan.Zero);
             request.Wait();
             
@@ -106,7 +107,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         [Fact]
         public void CompleteRequest_PassInvalidCompletedAt_ThrowCompleteAtException()
         {
-            var request = CreateParameterized(MerchandisePackType.StarterPack);
+            var request = CreateParameterized(MerchandisePackType.WelcomePack);
             var completeAt = new DateTimeOffset(2021, 11, 3, 10, 10, 20, TimeSpan.Zero);
             
             Assert.Throws<CompleteAtException>(()=> request.Complete(completeAt));
@@ -122,7 +123,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         
         [Theory]
         [MemberData(nameof(DataForGetSkuIds))]
-        public void GetSkuIds_ReturnExpectedValue(MerchandiseProvidingRequest merchandiseProvidingRequest, IEnumerable<long> expected)
+        public void GetSkuIds_ReturnExpectedValue(MerchandiseProvidingRequest merchandiseProvidingRequest, IEnumerable<int> expected)
         {
             var skuIds = merchandiseProvidingRequest.SkuIds;
             

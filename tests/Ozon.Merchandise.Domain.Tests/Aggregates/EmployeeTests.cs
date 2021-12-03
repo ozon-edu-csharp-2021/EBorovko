@@ -13,7 +13,7 @@ namespace Ozon.Merchandise.Domain.Tests.Aggregates
         {
             long id = 1;
             string email = "ivanov@ozon.com";
-            var merchItems = new[] {new MerchandisePack(MerchandisePackType.WelcomePack), new MerchandisePack(MerchandisePackType.StarterPack)};
+            var merchItems = new[] {new MerchandisePack(MerchandisePackType.WelcomePack), new MerchandisePack(MerchandisePackType.WelcomePack)};
             var employee = new Employee(id, Email.Create(email), merchItems );
             
             Assert.Equal(id, employee.Id);

@@ -16,6 +16,7 @@ namespace OzonEdu.StockApi.Migrator.Migrations
                     employee_id BIGINT NOT NULL,
                     merch_pack_type_id INTEGER NOT NULL,
                     status INTEGER NOT NULL,
+                    clothing_size INTEGER NOT NULL,
                     created_at TIMESTAMP NOT NULL,
                     completed_at TIMESTAMP 
                     );"

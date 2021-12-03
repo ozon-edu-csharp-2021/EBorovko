@@ -9,7 +9,7 @@ namespace OzonEdu.StockApi.Migrator.Migrations
         {
             Execute.Sql(@"
                 CREATE TABLE if not exists employees(
-                    id BIGINT PRIMARY KEY,
+                    id BIGSERIAL PRIMARY KEY,
                     email TEXT NOT NULL
                     );"
             );

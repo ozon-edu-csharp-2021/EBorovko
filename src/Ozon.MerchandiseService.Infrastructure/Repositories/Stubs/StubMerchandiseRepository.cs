@@ -18,9 +18,9 @@ namespace Ozon.MerchandiseService.Infrastructure.Repositories.Stubs
         {
             _requests = new List<MerchandiseProvidingRequest>
             {
-                new(new Employee(1, Email.Create("ivanov@ozon.com")), 10, DateTimeOffset.Now.AddDays(-1)),
-                new(new Employee(2, Email.Create("petrov@ozon.com")), 20, DateTimeOffset.Now.AddDays(-10)),
-                new(new Employee(3, Email.Create("sidorov@ozon.com")), 30, DateTimeOffset.Now.AddDays(-100))
+                new(new Employee(1, Email.Create("ivanov@ozon.com")), 10, 1, DateTimeOffset.Now.AddDays(-1)),
+                new(new Employee(2, Email.Create("petrov@ozon.com")), 20, 2, DateTimeOffset.Now.AddDays(-10)),
+                new(new Employee(3, Email.Create("sidorov@ozon.com")), 30, 3, DateTimeOffset.Now.AddDays(-100))
             };
         }
         
@@ -34,6 +34,11 @@ namespace Ozon.MerchandiseService.Infrastructure.Repositories.Stubs
             return Task.FromResult(request ?? new MerchandiseProvidingRequest());
         }
 
+        public Task<MerchandiseProvidingRequest> FindByMerchPackIdAndEmployeeEmailAsync(int merchPackId, string email, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<long> CreateAsync(MerchandiseProvidingRequest merchandiseRequest, CancellationToken cancellationToken)
         {
             merchandiseRequest.Id = ++_idCounter;
@@ -41,7 +46,12 @@ namespace Ozon.MerchandiseService.Infrastructure.Repositories.Stubs
             return Task.FromResult(merchandiseRequest.Id);
         }
 
-        public Task<long> UpdateAsync(MerchandiseProvidingRequest merchandiseRequest, CancellationToken cancellationToken)
+        public Task<int> UpdateAsync(MerchandiseProvidingRequest merchandiseRequest, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<MerchandiseProvidingRequest>> GetAllWithStatus(int status, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
