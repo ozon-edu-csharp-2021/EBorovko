@@ -4,6 +4,6 @@ namespace Ozon.MerchandiseService.Infrastructure.Queries
 {
     public class CheckProvidingQuery: IRequest<CheckProvidingQueryResponse>
     {
-        public long EmployeeId { get; set; }
+        public string EmployeeEmail { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     public class ProvideRequest
     {
         public int MerchPackId { get; set; }
-        public long EmployeeId { get; set; }
+        public int ClothingSize { get; set; }
         public string EmployeeEmail { get; set; }
     }
 }

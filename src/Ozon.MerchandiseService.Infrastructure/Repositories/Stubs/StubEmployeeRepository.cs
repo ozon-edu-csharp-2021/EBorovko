@@ -16,7 +16,7 @@ namespace Ozon.MerchandiseService.Infrastructure.Repositories.Stubs
         {
             _employees = new List<Employee>
             {
-                new(1, Email.Create("ivanov@ozon.com"), new []{ new MerchandisePack(MerchandisePackType.StarterPack),new MerchandisePack(MerchandisePackType.ConferenceListenerPack)}),
+                new(1, Email.Create("ivanov@ozon.com"), new []{ new MerchandisePack(MerchandisePackType.ConferenceListenerPack),new MerchandisePack(MerchandisePackType.ConferenceListenerPack)}),
                 new(2, Email.Create( "petrov@ozon.com"), new []{ new MerchandisePack(MerchandisePackType.WelcomePack)}),
                 new(3, Email.Create( "sidorov@ozon.com"), Enumerable.Empty<MerchandisePack>())
             };
@@ -34,6 +34,11 @@ namespace Ozon.MerchandiseService.Infrastructure.Repositories.Stubs
         }
 
         public Task<Employee> GetWithAllMerchPacksAsync(long employeeId, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<Employee> GetWithAllMerchPacksAsync(string email, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

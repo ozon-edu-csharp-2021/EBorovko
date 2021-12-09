@@ -7,7 +7,6 @@ using Ozon.MerchandiseService.Domain.Aggregates.Employee;
 using Ozon.MerchandiseService.Domain.Aggregates.Employee.ValueObjects;
 using Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest;
 using Ozon.MerchandiseService.Domain.Contracts;
-//using Ozon.MerchandiseService.Domain.Entities.MerchandiseItem;
 using Ozon.MerchandiseService.Infrastructure.Commands;
 using Ozon.MerchandiseService.Infrastructure.Services.Interfaces;
 
@@ -37,7 +36,7 @@ namespace Ozon.MerchandiseService.Infrastructure.Handlers
         {
             await _unitOfWork.StartTransaction(cancellationToken);
             
-            var merchRequest =  await _merchandiseProvidingRequestRepository.FindByMerchPackIdAndEmployeeIdAsync(request.MerchPackId, request.EmployeeId, cancellationToken);
+            var merchRequest =  await _merchandiseProvidingRequestRepository.FindByMerchPackIdAndEmployeeEmailAsync(request.MerchPackId, request.EmployeeEmail, cancellationToken);
             
             if (merchRequest.IsDone && !merchRequest.CheckOneYearPassFromProviding(_dateTimeService.Now))
                 throw new Exception("Merch pack of such type already provide to employee");
@@ -45,16 +44,20 @@ namespace Ozon.MerchandiseService.Infrastructure.Handlers
             if (merchRequest.InWork)
                 throw new Exception("Request for мerch pack of such type exists. Waiting stock supplying");
             
-            var newMerchRequest = new MerchandiseProvidingRequest(new Employee(request.EmployeeId, Email.Create(request.EmployeeEmail)), request.MerchPackId, _dateTimeService.Now);
-            
-            var quantities = await Task.WhenAll(newMerchRequest.SkuIds.Select(skuId => _stockApiService.GetAvailableQuantityBySkuId(skuId)));
-            bool areAllAvailable = quantities.All(quantity => quantity > 0);
+            var newMerchRequest = new MerchandiseProvidingRequest(new Employee(0,Email.Create(request.EmployeeEmail)),  request.MerchPackId, request.ClothingSize, _dateTimeService.Now);
+
+            var skuItems = await Task.WhenAll(newMerchRequest.SkuIds.Select(skuId => _stockApiService.GetByItemTypeAsync(skuId, request.ClothingSize)));
+
+            bool areAllAvailable = skuItems.All(item => item.Quantity > 0);
             if (!areAllAvailable)
                 newMerchRequest.Wait();
             else
             {
-                await Task.WhenAll(newMerchRequest.SkuIds.Select(skuId => _stockApiService.ReserveBySkuId(skuId)));
-                newMerchRequest.Complete(_dateTimeService.Now);
+                var areGiveOut =  await _stockApiService.GiveOutItemsAsync(skuItems.Select(skuItem => skuItem.Id));
+                if(areGiveOut)
+                    newMerchRequest.Complete(_dateTimeService.Now);
+                else
+                    newMerchRequest.Wait();
             }
             
             long id = await _merchandiseProvidingRequestRepository.CreateAsync(newMerchRequest, cancellationToken);

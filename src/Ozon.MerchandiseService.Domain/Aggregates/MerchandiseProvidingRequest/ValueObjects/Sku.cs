@@ -5,10 +5,10 @@ namespace Ozon.MerchandiseService.Domain.Aggregates.MerchandiseProvidingRequest.
 {
     public sealed class Sku : ValueObject
     {
-        public long Value { get; }
+        public int Value { get; }
         public string Name { get; }
 
-        public Sku(long value, string name)
+        public Sku(int value, string name)
         {
             Value = value;
             Name = name;

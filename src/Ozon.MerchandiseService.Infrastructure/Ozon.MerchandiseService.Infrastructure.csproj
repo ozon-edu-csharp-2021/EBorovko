@@ -9,9 +9,28 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
+        <PackageReference Include="CSharpCourse.Core.Lib" Version="2.1.0" />
         <PackageReference Include="Dapper" Version="2.0.123" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.8.0" />
         <PackageReference Include="Npgsql" Version="6.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.19.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.41.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <Protobuf Include="Services\StockApiService\stock-api.proto">
+            <GrpcServices>Client</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>obj\Debug\net5.0\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
 </Project>

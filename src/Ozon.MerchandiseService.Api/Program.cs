@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Ozon.MerchandiseService.Api.Infrastructure.Extensions;
+using Serilog;
 
 
 namespace Ozon.MerchandiseService.Api
@@ -14,7 +14,11 @@ namespace Ozon.MerchandiseService.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
+                .UseSerilog((context, configuration) => configuration
+                    .ReadFrom
+                    .Configuration(context.Configuration)
+                    .WriteTo.Console())
+                .ConfigurePorts()
                 .AddInfrastructure();
     }
 }

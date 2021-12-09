@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ozon.MerchandiseService.Infrastructure.Services.Interfaces;
 
-namespace Ozon.MerchandiseService.Infrastructure.Services
+namespace Ozon.MerchandiseService.Infrastructure.Services.StockApiService
 {
     public class MockStockApiService: IStockApiService
     {
@@ -33,6 +33,26 @@ namespace Ozon.MerchandiseService.Infrastructure.Services
             var stockItem = _stockItems.First(si => si.SkuId == skuId);
             stockItem.Quantity -= 1;
             return Task.CompletedTask;
+        }
+
+        public Task<GetByItemTypeDto> GetByItemTypeAsync(int itemType, int size)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> GiveOutItemsAsync(IEnumerable<long> skuIds)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> GiveOutItemsAsync(IEnumerable<int> skuIds)
+        {
+            return Task.FromResult(false);
+        }
+
+        public Task<IEnumerable<GetByItemTypeDto>> GetByItemTypeAsync(int itemType)
+        {
+            return Task.FromResult(Enumerable.Empty<GetByItemTypeDto>());
         }
     }
 
